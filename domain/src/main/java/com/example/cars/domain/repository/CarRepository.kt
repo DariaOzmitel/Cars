@@ -1,11 +1,11 @@
 package com.example.cars.domain.repository
 
-import com.example.cars.domain.models.Car
+import com.example.cars.domain.models.CarItem
 
 interface CarRepository {
-    fun getCarList(): List<Car>
-    fun addCar(car: Car)
-    fun editCar(car: Car)
-    fun deleteCar(car: Car)
-    fun getCarItem(carItemId: Int): Car
+    fun getCarList(): List<CarItem>
+    fun addCar(carItem: CarItem)
+    fun editCar(carItem: CarItem)
+    fun deleteCar(carItem: CarItem)
+    fun getCarItem(carItemId: Int): CarItem
 }
