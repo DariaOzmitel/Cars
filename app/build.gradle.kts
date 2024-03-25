@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,9 +43,14 @@ android {
 dependencies {
 
     val daggerVersion = "2.51"
+    val roomVersion = "2.6.1"
 
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation("androidx.core:core-ktx:1.12.0")

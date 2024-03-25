@@ -2,8 +2,10 @@ package com.example.cars
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import com.example.cars.adapters.CarListAdapter
 import com.example.cars.databinding.ActivityMainBinding
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,11 +15,23 @@ class MainActivity : AppCompatActivity() {
     private val carListAdapter by lazy {
         CarListAdapter()
     }
+    private val component by lazy {
+        (application as CarApp).component
+    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component.inject(this)
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
         setupRecyclerView()
+        viewModel.carList.observe(this) {
+            carListAdapter.submitList(it)
+        }
     }
 
     private fun setupRecyclerView() {
