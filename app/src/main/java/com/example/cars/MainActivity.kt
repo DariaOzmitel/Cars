@@ -1,7 +1,7 @@
 package com.example.cars
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.cars.adapters.CarListAdapter
 import com.example.cars.databinding.ActivityMainBinding
@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val component by lazy {
         (application as CarApp).component
     }
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -27,8 +28,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         component.inject(this)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         setupRecyclerView()
+        binding.buttonAddCarItem.setOnClickListener {
+            val intent = CarItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
         viewModel.carList.observe(this) {
             carListAdapter.submitList(it)
         }
@@ -40,4 +45,5 @@ class MainActivity : AppCompatActivity() {
             TODO()
         }
     }
+
 }

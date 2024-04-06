@@ -9,8 +9,14 @@ import androidx.room.Query
 @Dao
 interface CarInfoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCarItem(carInfoDbModel: CarInfoDbModel)
+    suspend fun addCarItem(carInfoDbModel: CarInfoDbModel)
 
     @Query("SELECT * FROM carInfo")
     fun getCarList(): LiveData<List<CarInfoDbModel>>
+
+    @Query("SELECT * FROM carInfo WHERE id=:carItemId LIMIT 1")
+    suspend fun getCarItem(carItemId: Int): CarInfoDbModel
+
+    @Query("DELETE FROM carInfo WHERE id=:carItemId")
+    suspend fun deleteCarItem(carItemId: Int)
 }

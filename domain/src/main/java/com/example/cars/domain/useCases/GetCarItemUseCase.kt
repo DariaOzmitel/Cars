@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetCarItemUseCase @Inject constructor(
     private val repository: CarRepository
 ) {
-    fun getCarItem(carItemId: Int): CarItem {
+    suspend fun getCarItem(carItemId: Int): CarItem {
         return repository.getCarItem(carItemId)
     }
 }

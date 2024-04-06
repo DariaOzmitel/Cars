@@ -7,7 +7,7 @@ import javax.inject.Inject
 class EditCarUseCase @Inject constructor(
     private val repository: CarRepository
 ) {
-    fun editCar(carItem: CarItem) {
+    suspend fun editCar(carItem: CarItem) {
         repository.editCar(carItem)
     }
 }

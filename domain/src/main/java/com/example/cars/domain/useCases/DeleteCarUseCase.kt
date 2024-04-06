@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteCarUseCase @Inject constructor(
     private val repository: CarRepository
 ) {
-    fun deleteCar(carItem: CarItem) {
+    suspend fun deleteCar(carItem: CarItem) {
         repository.deleteCar(carItem)
     }
 }

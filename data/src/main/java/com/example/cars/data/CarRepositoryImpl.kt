@@ -10,24 +10,24 @@ import javax.inject.Inject
 class CarRepositoryImpl @Inject constructor(
     private val carInfoDao: CarInfoDao,
     private val mapper: CarListMapper
-): CarRepository {
-    override fun getCarList(): LiveData<List<CarItem>> = carInfoDao.getCarList().map{
+) : CarRepository {
+    override fun getCarList(): LiveData<List<CarItem>> = carInfoDao.getCarList().map {
         mapper.mapListDbToListEntity(it)
     }
 
-    override fun addCar(carItem: CarItem) {
+    override suspend fun addCar(carItem: CarItem) {
         carInfoDao.addCarItem(mapper.mapEntityToDbModel(carItem))
     }
 
-    override fun editCar(carItem: CarItem) {
-        TODO("Not yet implemented")
+    override suspend fun editCar(carItem: CarItem) {
+        carInfoDao.addCarItem(mapper.mapEntityToDbModel(carItem))
     }
 
-    override fun deleteCar(carItem: CarItem) {
-        TODO("Not yet implemented")
+    override suspend fun deleteCar(carItem: CarItem) {
+        carInfoDao.deleteCarItem(carItem.id)
     }
 
-    override fun getCarItem(carItemId: Int): CarItem {
-        TODO("Not yet implemented")
+    override suspend fun getCarItem(carItemId: Int): CarItem {
+        return mapper.mapDbModelToEntity(carInfoDao.getCarItem(carItemId))
     }
 }

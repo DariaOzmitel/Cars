@@ -5,8 +5,8 @@ import com.example.cars.domain.models.CarItem
 
 interface CarRepository {
     fun getCarList(): LiveData<List<CarItem>>
-    fun addCar(carItem: CarItem)
-    fun editCar(carItem: CarItem)
-    fun deleteCar(carItem: CarItem)
-    fun getCarItem(carItemId: Int): CarItem
+    suspend fun addCar(carItem: CarItem)
+    suspend fun editCar(carItem: CarItem)
+    suspend fun deleteCar(carItem: CarItem)
+    suspend fun getCarItem(carItemId: Int): CarItem
 }

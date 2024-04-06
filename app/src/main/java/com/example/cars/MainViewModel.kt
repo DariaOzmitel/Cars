@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val getCarListUseCase: GetCarListUseCase
-): ViewModel() {
+) : ViewModel() {
     val carList = getCarListUseCase.getCarList()
 }
