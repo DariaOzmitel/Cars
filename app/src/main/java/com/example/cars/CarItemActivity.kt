@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.cars.databinding.ActivityCarItemBinding
+import com.example.cars.domain.models.CarItem
 import javax.inject.Inject
 
 class CarItemActivity : AppCompatActivity() {
 
-    private var screenMode = ""
     private val binding by lazy {
         ActivityCarItemBinding.inflate(layoutInflater)
     }
@@ -29,13 +29,24 @@ class CarItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         component.inject(this)
-        parseIntent()
         launchRightMode()
+
+    }
+
+    private fun observeCarItem() {
+        viewModel.carItem.observe(this) {
+            binding.etManufacturer.setText(it.manufacturer)
+            binding.etCarModel.setText(it.carModel)
+        }
     }
 
     private fun launchRightMode() {
-        when (screenMode) {
-            //MODE_EDIT -> launchEditMode()
+        when (defineScreenMode()) {
+            MODE_EDIT -> {
+                launchEditMode()
+                observeCarItem()
+            }
+
             MODE_ADD -> launchAddMode()
         }
     }
@@ -50,20 +61,32 @@ class CarItemActivity : AppCompatActivity() {
         }
     }
 
-    private fun parseIntent() {
+    private fun launchEditMode() {
+        viewModel.getCarItem(defineCarItemId())
+        binding.buttonSave.setOnClickListener {
+            viewModel.editCarItem(
+                binding.etManufacturer.text.toString(),
+                binding.etCarModel.text.toString()
+            )
+            finish()
+        }
+    }
+
+    private fun defineScreenMode(): String {
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             throw RuntimeException("Param screen mode is absent")
         }
         val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
         if (mode != MODE_ADD && mode != MODE_EDIT)
             throw RuntimeException("Unknown screen mode $mode")
-        screenMode = mode
-        if (mode == MODE_EDIT) {
-            if (!intent.hasExtra(EXTRA_CAR_ITEM_ID)) {
-                throw RuntimeException("Param shop item id is absent")
-            }
-            //carItemId = intent.getIntExtra(EXTRA_CAR_ITEM_ID, CarItem.UNDEFINED_ID)
+        return mode
+    }
+
+    private fun defineCarItemId(): Int {
+        if (!intent.hasExtra(EXTRA_CAR_ITEM_ID)) {
+            throw RuntimeException("Param shop item id is absent")
         }
+        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, CarItem.UNDEFINED_ID)
     }
 
     companion object {
@@ -78,10 +101,10 @@ class CarItemActivity : AppCompatActivity() {
             return intent
         }
 
-        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
+        fun newIntentEditItem(context: Context, carItemId: Int): Intent {
             val intent = Intent(context, CarItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
-            intent.putExtra(EXTRA_CAR_ITEM_ID, shopItemId)
+            intent.putExtra(EXTRA_CAR_ITEM_ID, carItemId)
             return intent
         }
     }

@@ -3,6 +3,8 @@ package com.example.cars
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cars.adapters.CarListAdapter
 import com.example.cars.databinding.ActivityMainBinding
 import javax.inject.Inject
@@ -42,8 +44,32 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         binding.rvCarList.adapter = carListAdapter
         carListAdapter.onCarItemClickListener = {
-            TODO()
+            val intent = CarItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
+        setupSwipeListener(binding.rvCarList)
+    }
+
+    private fun setupSwipeListener(rvCarList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = carListAdapter.currentList[viewHolder.adapterPosition]
+                viewModel.deleteCarItem(item)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvCarList)
     }
 
 }
