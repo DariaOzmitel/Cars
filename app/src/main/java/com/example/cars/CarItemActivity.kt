@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.cars.databinding.ActivityCarItemBinding
 import com.example.cars.domain.models.CarItem
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CarItemActivity : AppCompatActivity() {
@@ -30,14 +33,47 @@ class CarItemActivity : AppCompatActivity() {
         setContentView(binding.root)
         component.inject(this)
         launchRightMode()
+        addAfterTextChanged()
+    }
 
+    private fun addAfterTextChanged() {
+        binding.etManufacturer.doAfterTextChanged {
+            viewModel.resetErrorInputManufacturer()
+        }
+        binding.etCarModel.doAfterTextChanged {
+            viewModel.resetErrorInputCarModel()
+        }
     }
 
     private fun observeCarItem() {
-        viewModel.carItem.observe(this) {
-            binding.etManufacturer.setText(it.manufacturer)
-            binding.etCarModel.setText(it.carModel)
+        lifecycleScope.launch {
+            viewModel.state.collect {
+                when (it) {
+                    is CarItemInfo -> {
+                        binding.etManufacturer.setText(it.value.manufacturer)
+                        binding.etCarModel.setText(it.value.carModel)
+                    }
+
+                    is ErrorInputManufacturer -> {
+                        if (it.value) binding.tilManufacturer.error =
+                            getString(R.string.param_manufacturer_is_absent)
+                        else binding.tilManufacturer.error = null
+                    }
+
+                    is ErrorInputCarModel -> {
+                        if (it.value) binding.tilCarModel.error =
+                            getString(R.string.param_car_model_is_absent)
+                        else binding.tilCarModel.error = null
+                    }
+
+                    is CloseScreen -> {
+                        finish()
+                    }
+                }
+
+            }
         }
+
     }
 
     private fun launchRightMode() {
@@ -57,8 +93,8 @@ class CarItemActivity : AppCompatActivity() {
                 binding.etManufacturer.text.toString(),
                 binding.etCarModel.text.toString()
             )
-            finish()
         }
+        observeCarItem()
     }
 
     private fun launchEditMode() {
@@ -68,7 +104,6 @@ class CarItemActivity : AppCompatActivity() {
                 binding.etManufacturer.text.toString(),
                 binding.etCarModel.text.toString()
             )
-            finish()
         }
     }
 

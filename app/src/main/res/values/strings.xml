@@ -3,4 +3,6 @@
     <string name="manufacturer">Manufacturer:</string>
     <string name="car_model">Car model:</string>
     <string name="save">Save</string>
+    <string name="param_manufacturer_is_absent">Param manufacturer is absent</string>
+    <string name="param_car_model_is_absent">Param car model is absent</string>
 </resources>
