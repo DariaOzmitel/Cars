@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/tv_id"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:text="Id"
@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/tv_manufacturer"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Manufacturer"
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/tv_carModel"
-            android:layout_width="wrap_content"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Car Model"

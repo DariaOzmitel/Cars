@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.cars.data.database.CarInfoDao
 import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.CarModelItem
+import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.repository.CarRepository
 import javax.inject.Inject
 
@@ -17,6 +19,14 @@ class CarRepositoryImpl @Inject constructor(
 
     override suspend fun addCar(carItem: CarItem) {
         carInfoDao.addCarItem(mapper.mapEntityToDbModel(carItem))
+    }
+
+    override suspend fun addManufacturer(manufacturerItem: ManufacturerItem) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addCarModel(carModelItem: CarModelItem) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun editCar(carItem: CarItem) {
