@@ -4,9 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.cars.data.database.cars.CarInfoDao
+import com.example.cars.data.database.cars.CarInfoDbModel
+import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
+import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
 
-@Database(entities = [CarInfoDbModel::class], version = 2, exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
+@Database(
+    entities = [CarInfoDbModel::class, ManufacturerInfoDbModel::class],
+    version = 3,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
     companion object {
 
         private var db: AppDatabase? = null
@@ -29,5 +37,7 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
     }
+
     abstract fun carInfoDao(): CarInfoDao
+    abstract fun manufacturerInfoDao(): ManufacturerInfoDao
 }

@@ -1,15 +1,13 @@
-package com.example.cars.data.database
+package com.example.cars.data.database.manufacturers
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity (tableName = "carInfo")
-data class CarInfoDbModel(
+@Entity(tableName = "manufacturerInfo")
+data class ManufacturerInfoDbModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     @ColumnInfo(name = "manufacturer")
-    val manufacturer: String,
-    @ColumnInfo(name = "carModel")
-    val carModel: String
+    val manufacturer: String
 )

@@ -2,7 +2,7 @@ package com.example.cars.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.cars.data.database.CarInfoDao
+import com.example.cars.data.database.cars.CarInfoDao
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.ManufacturerItem

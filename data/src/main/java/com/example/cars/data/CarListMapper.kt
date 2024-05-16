@@ -1,6 +1,6 @@
 package com.example.cars.data
 
-import com.example.cars.data.database.CarInfoDbModel
+import com.example.cars.data.database.cars.CarInfoDbModel
 import com.example.cars.domain.models.CarItem
 import javax.inject.Inject
 
