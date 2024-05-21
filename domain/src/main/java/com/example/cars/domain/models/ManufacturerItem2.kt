@@ -1,9 +1,8 @@
 package com.example.cars.domain.models
 
-data class CarItem(
+data class ManufacturerItem2(
     val id: Int = UNDEFINED_ID,
-    val manufacturer: String,
-    val carModel: String
+    val manufacturerName: String
 ) {
     companion object {
         const val UNDEFINED_ID = 0

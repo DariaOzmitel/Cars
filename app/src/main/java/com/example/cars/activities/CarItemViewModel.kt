@@ -8,18 +8,18 @@ import com.example.cars.CloseScreen
 import com.example.cars.ErrorInputCarModel
 import com.example.cars.ErrorInputManufacturer
 import com.example.cars.domain.models.CarItem
-import com.example.cars.domain.useCases.car.AddCarUseCase
-import com.example.cars.domain.useCases.car.EditCarUseCase
 import com.example.cars.domain.useCases.car.GetCarItemUseCase
+import com.example.cars.domain.useCases.item.AddItemUseCase
+import com.example.cars.domain.useCases.item.EditItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CarItemViewModel @Inject constructor(
-    private val addCarUseCase: AddCarUseCase,
+    private val addItemUseCase: AddItemUseCase,
     private val getCarItemUseCase: GetCarItemUseCase,
-    private val editCarUseCase: EditCarUseCase
+    private val editItemUseCase: EditItemUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CarItemState>(
@@ -36,7 +36,7 @@ class CarItemViewModel @Inject constructor(
         if (fieldsValid) {
             viewModelScope.launch {
                 val carItem = CarItem(manufacturer = manufacturer, carModel = carModel)
-                addCarUseCase.addCar(CarItem::class.java, carItem)
+                addItemUseCase.addCar(carItem)
             }
             finishWork()
         }
@@ -56,7 +56,7 @@ class CarItemViewModel @Inject constructor(
         if (fieldsValid) {
             viewModelScope.launch {
                 carItem = carItem.copy(manufacturer = manufacturer, carModel = carModel)
-                editCarUseCase.editCar(carItem)
+                editItemUseCase.editCar(carItem)
             }
             finishWork()
         }
