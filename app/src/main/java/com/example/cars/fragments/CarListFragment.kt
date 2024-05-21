@@ -1,4 +1,4 @@
-package com.example.cars
+package com.example.cars.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cars.CarApp
+import com.example.cars.activities.CarItemActivity
+import com.example.cars.ViewModelFactory
 import com.example.cars.adapters.CarListAdapter
 import com.example.cars.databinding.FragmentCarListBinding
 import javax.inject.Inject
@@ -27,7 +30,7 @@ class CarListFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: CarListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,7 @@ class CarListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[CarListViewModel::class.java]
         setupRecyclerView()
         binding.buttonAddCarItem.setOnClickListener {
             val intent = CarItemActivity.newIntentAddItem(requireContext())

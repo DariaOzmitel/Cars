@@ -1,13 +1,13 @@
-package com.example.cars.domain.useCases
+package com.example.cars.domain.useCases.car
 
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.repository.CarRepository
 import javax.inject.Inject
 
-class EditCarUseCase @Inject constructor(
+class DeleteCarUseCase @Inject constructor(
     private val repository: CarRepository
 ) {
-    suspend fun editCar(carItem: CarItem) {
-        repository.editCar(carItem)
+    suspend fun deleteCar(carItem: CarItem) {
+        repository.deleteCar(carItem)
     }
 }

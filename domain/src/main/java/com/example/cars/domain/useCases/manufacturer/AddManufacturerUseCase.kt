@@ -1,4 +1,4 @@
-package com.example.cars.domain.useCases
+package com.example.cars.domain.useCases.manufacturer
 
 import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.repository.CarRepository

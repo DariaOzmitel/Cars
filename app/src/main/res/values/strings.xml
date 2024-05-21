@@ -6,4 +6,6 @@
     <string name="param_manufacturer_is_absent">Param manufacturer is absent</string>
     <string name="param_car_model_is_absent">Param car model is absent</string>
     <string name="addManufacturer">AddManufacturer</string>
+    <string name="id">Id</string>
+    <string name="addNewManufacturer">Add new manufacturer</string>
 </resources>

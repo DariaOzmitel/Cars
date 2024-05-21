@@ -7,7 +7,7 @@ import com.example.cars.domain.models.ManufacturerItem
 
 interface CarRepository {
     fun getCarList(): LiveData<List<CarItem>>
-    suspend fun addCar(carItem: CarItem)
+    suspend fun <T> addCar(itemClass: Class<T>, carItem: T)
     suspend fun addManufacturer(manufacturerItem: ManufacturerItem)
     suspend fun addCarModel(carModelItem: CarModelItem)
     suspend fun editCar(carItem: CarItem)

@@ -1,4 +1,4 @@
-package com.example.cars.domain.useCases
+package com.example.cars.domain.useCases.car
 
 import androidx.lifecycle.LiveData
 import com.example.cars.domain.models.CarItem

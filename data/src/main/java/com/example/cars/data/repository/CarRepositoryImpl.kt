@@ -1,8 +1,11 @@
-package com.example.cars.data
+package com.example.cars.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.cars.data.database.cars.CarInfoDao
+import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
+import com.example.cars.data.mapper.CarListMapper
+import com.example.cars.data.mapper.ManufacturerListMapper
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.ManufacturerItem
@@ -11,18 +14,25 @@ import javax.inject.Inject
 
 class CarRepositoryImpl @Inject constructor(
     private val carInfoDao: CarInfoDao,
-    private val mapper: CarListMapper
+    private val manufacturerInfoDao: ManufacturerInfoDao,
+    private val carListMapper: CarListMapper,
+    private val manufacturerListMapper: ManufacturerListMapper
 ) : CarRepository {
     override fun getCarList(): LiveData<List<CarItem>> = carInfoDao.getCarList().map {
-        mapper.mapListDbToListEntity(it)
+        carListMapper.mapListDbToListEntity(it)
     }
 
-    override suspend fun addCar(carItem: CarItem) {
-        carInfoDao.addCarItem(mapper.mapEntityToDbModel(carItem))
+    override suspend fun <T> addCar(itemClass: Class<T>, item: T) {
+        if (itemClass.simpleName == "CarItem")
+        carInfoDao.addCarItem(carListMapper.mapEntityToDbModel(item as CarItem))
     }
 
     override suspend fun addManufacturer(manufacturerItem: ManufacturerItem) {
-        TODO("Not yet implemented")
+        manufacturerInfoDao.addManufacturerItem(
+            manufacturerListMapper.mapEntityToDbModel(
+                manufacturerItem
+            )
+        )
     }
 
     override suspend fun addCarModel(carModelItem: CarModelItem) {
@@ -30,7 +40,7 @@ class CarRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editCar(carItem: CarItem) {
-        carInfoDao.addCarItem(mapper.mapEntityToDbModel(carItem))
+        carInfoDao.addCarItem(carListMapper.mapEntityToDbModel(carItem))
     }
 
     override suspend fun deleteCar(carItem: CarItem) {
@@ -38,6 +48,6 @@ class CarRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCarItem(carItemId: Int): CarItem {
-        return mapper.mapDbModelToEntity(carInfoDao.getCarItem(carItemId))
+        return carListMapper.mapDbModelToEntity(carInfoDao.getCarItem(carItemId))
     }
 }

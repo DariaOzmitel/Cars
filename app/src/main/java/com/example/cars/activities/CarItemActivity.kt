@@ -1,4 +1,4 @@
-package com.example.cars
+package com.example.cars.activities
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cars.CarApp
+import com.example.cars.CarItemInfo
+import com.example.cars.CloseScreen
+import com.example.cars.ErrorInputCarModel
+import com.example.cars.ErrorInputManufacturer
+import com.example.cars.R
+import com.example.cars.ViewModelFactory
 import com.example.cars.databinding.ActivityCarItemBinding
 import com.example.cars.domain.models.CarItem
 import kotlinx.coroutines.launch

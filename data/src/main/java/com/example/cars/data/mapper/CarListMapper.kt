@@ -1,4 +1,4 @@
-package com.example.cars.data
+package com.example.cars.data.mapper
 
 import com.example.cars.data.database.cars.CarInfoDbModel
 import com.example.cars.domain.models.CarItem

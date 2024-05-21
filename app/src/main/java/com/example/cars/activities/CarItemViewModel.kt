@@ -1,11 +1,16 @@
-package com.example.cars
+package com.example.cars.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cars.CarItemInfo
+import com.example.cars.CarItemState
+import com.example.cars.CloseScreen
+import com.example.cars.ErrorInputCarModel
+import com.example.cars.ErrorInputManufacturer
 import com.example.cars.domain.models.CarItem
-import com.example.cars.domain.useCases.AddCarUseCase
-import com.example.cars.domain.useCases.EditCarUseCase
-import com.example.cars.domain.useCases.GetCarItemUseCase
+import com.example.cars.domain.useCases.car.AddCarUseCase
+import com.example.cars.domain.useCases.car.EditCarUseCase
+import com.example.cars.domain.useCases.car.GetCarItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +36,7 @@ class CarItemViewModel @Inject constructor(
         if (fieldsValid) {
             viewModelScope.launch {
                 val carItem = CarItem(manufacturer = manufacturer, carModel = carModel)
-                addCarUseCase.addCar(carItem)
+                addCarUseCase.addCar(CarItem::class.java, carItem)
             }
             finishWork()
         }
