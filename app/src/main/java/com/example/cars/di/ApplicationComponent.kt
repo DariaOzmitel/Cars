@@ -1,9 +1,9 @@
 package com.example.cars.di
 
 import android.app.Application
-import com.example.cars.CarItemActivity
-import com.example.cars.CarListFragment
-import com.example.cars.MainActivity
+import com.example.cars.activities.CarItemActivity
+import com.example.cars.fragments.CarListFragment
+import com.example.cars.activities.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 

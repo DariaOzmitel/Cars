@@ -1,7 +1,7 @@
 package com.example.cars.di
 
 import android.app.Application
-import com.example.cars.data.CarRepositoryImpl
+import com.example.cars.data.repository.CarRepositoryImpl
 import com.example.cars.data.database.AppDatabase
 import com.example.cars.data.database.cars.CarInfoDao
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDao

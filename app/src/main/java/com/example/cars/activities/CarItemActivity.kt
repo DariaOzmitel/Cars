@@ -1,4 +1,4 @@
-package com.example.cars
+package com.example.cars.activities
 
 import android.content.Context
 import android.content.Intent
@@ -7,8 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.cars.CarApp
+import com.example.cars.CarItemInfo
+import com.example.cars.CloseScreen
+import com.example.cars.ErrorInputCarModel
+import com.example.cars.ErrorInputManufacturer
+import com.example.cars.R
+import com.example.cars.ViewModelFactory
 import com.example.cars.databinding.ActivityCarItemBinding
-import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.Item
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -121,7 +128,7 @@ class CarItemActivity : AppCompatActivity() {
         if (!intent.hasExtra(EXTRA_CAR_ITEM_ID)) {
             throw RuntimeException("Param shop item id is absent")
         }
-        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, CarItem.UNDEFINED_ID)
+        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, Item.UNDEFINED_ID)
     }
 
     companion object {

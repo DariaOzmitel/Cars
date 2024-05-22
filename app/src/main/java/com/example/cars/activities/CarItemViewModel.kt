@@ -1,20 +1,25 @@
-package com.example.cars
+package com.example.cars.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cars.CarItemInfo
+import com.example.cars.CarItemState
+import com.example.cars.CloseScreen
+import com.example.cars.ErrorInputCarModel
+import com.example.cars.ErrorInputManufacturer
 import com.example.cars.domain.models.CarItem
-import com.example.cars.domain.useCases.AddCarUseCase
-import com.example.cars.domain.useCases.EditCarUseCase
-import com.example.cars.domain.useCases.GetCarItemUseCase
+import com.example.cars.domain.useCases.item.AddItemUseCase
+import com.example.cars.domain.useCases.item.EditItemUseCase
+import com.example.cars.domain.useCases.item.GetItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CarItemViewModel @Inject constructor(
-    private val addCarUseCase: AddCarUseCase,
-    private val getCarItemUseCase: GetCarItemUseCase,
-    private val editCarUseCase: EditCarUseCase
+    private val addItemUseCase: AddItemUseCase,
+    private val getItemUseCase: GetItemUseCase,
+    private val editItemUseCase: EditItemUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CarItemState>(
@@ -31,7 +36,7 @@ class CarItemViewModel @Inject constructor(
         if (fieldsValid) {
             viewModelScope.launch {
                 val carItem = CarItem(manufacturer = manufacturer, carModel = carModel)
-                addCarUseCase.addCar(carItem)
+                addItemUseCase.addItem(carItem)
             }
             finishWork()
         }
@@ -39,7 +44,7 @@ class CarItemViewModel @Inject constructor(
 
     fun getCarItem(carItemId: Int) {
         viewModelScope.launch {
-            carItem = getCarItemUseCase.getCarItem(carItemId)
+            carItem = getItemUseCase.getItem(CarItem::class, carItemId) as CarItem
             _state.value = CarItemInfo(carItem)
         }
     }
@@ -51,7 +56,7 @@ class CarItemViewModel @Inject constructor(
         if (fieldsValid) {
             viewModelScope.launch {
                 carItem = carItem.copy(manufacturer = manufacturer, carModel = carModel)
-                editCarUseCase.editCar(carItem)
+                editItemUseCase.editItem(carItem)
             }
             finishWork()
         }

@@ -1,16 +1,13 @@
 package com.example.cars.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.cars.domain.models.CarItem
-import com.example.cars.domain.models.CarModelItem
-import com.example.cars.domain.models.ManufacturerItem
+import com.example.cars.domain.models.Item
+import kotlin.reflect.KClass
 
 interface CarRepository {
-    fun getCarList(): LiveData<List<CarItem>>
-    suspend fun addCar(carItem: CarItem)
-    suspend fun addManufacturer(manufacturerItem: ManufacturerItem)
-    suspend fun addCarModel(carModelItem: CarModelItem)
-    suspend fun editCar(carItem: CarItem)
-    suspend fun deleteCar(carItem: CarItem)
-    suspend fun getCarItem(carItemId: Int): CarItem
+    fun <T : Item> getItemList(itemClass: KClass<T>): LiveData<List<Item>>
+    suspend fun addItem(item: Item)
+    suspend fun editItem(item: Item)
+    suspend fun deleteItem(item: Item)
+    suspend fun <T : Item> getItem(itemClass: KClass<T>, itemId: Int): Item
 }
