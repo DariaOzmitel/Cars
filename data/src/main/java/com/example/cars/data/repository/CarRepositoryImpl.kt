@@ -7,9 +7,7 @@ import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
 import com.example.cars.data.mapper.CarListMapper
 import com.example.cars.data.mapper.ManufacturerListMapper
 import com.example.cars.domain.models.CarItem
-import com.example.cars.domain.models.CarModelItem2
 import com.example.cars.domain.models.Item
-import com.example.cars.domain.models.ManufacturerItem2
 import com.example.cars.domain.repository.CarRepository
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -46,18 +44,6 @@ class CarRepositoryImpl @Inject constructor(
 
             else -> {}
         }
-    }
-
-    override suspend fun addManufacturer(manufacturerItem2: ManufacturerItem2) {
-        manufacturerInfoDao.addManufacturerItem(
-            manufacturerListMapper.mapEntityToDbModel(
-                manufacturerItem2
-            )
-        )
-    }
-
-    override suspend fun addCarModel(carModelItem2: CarModelItem2) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun editItem(item: Item) {

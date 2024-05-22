@@ -1,16 +1,16 @@
 package com.example.cars.data.mapper
 
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
-import com.example.cars.domain.models.ManufacturerItem2
+import com.example.cars.domain.models.ManufacturerItem
 import javax.inject.Inject
 
 class ManufacturerListMapper @Inject constructor() {
-    fun mapEntityToDbModel(manufacturerItem2: ManufacturerItem2) = ManufacturerInfoDbModel(
-        id = manufacturerItem2.id,
-        manufacturer = manufacturerItem2.manufacturerName
+    fun mapEntityToDbModel(manufacturerItem: ManufacturerItem) = ManufacturerInfoDbModel(
+        id = manufacturerItem.id,
+        manufacturer = manufacturerItem.manufacturerName
     )
 
-    fun mapDbModelToEntity(manufacturerInfoDbModel: ManufacturerInfoDbModel) = ManufacturerItem2(
+    fun mapDbModelToEntity(manufacturerInfoDbModel: ManufacturerInfoDbModel) = ManufacturerItem(
         id = manufacturerInfoDbModel.id,
         manufacturerName = manufacturerInfoDbModel.manufacturer
     )

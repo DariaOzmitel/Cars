@@ -15,7 +15,7 @@ import com.example.cars.ErrorInputManufacturer
 import com.example.cars.R
 import com.example.cars.ViewModelFactory
 import com.example.cars.databinding.ActivityCarItemBinding
-import com.example.cars.domain.models.CarItem2
+import com.example.cars.domain.models.Item
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -128,7 +128,7 @@ class CarItemActivity : AppCompatActivity() {
         if (!intent.hasExtra(EXTRA_CAR_ITEM_ID)) {
             throw RuntimeException("Param shop item id is absent")
         }
-        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, CarItem2.UNDEFINED_ID)
+        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, Item.UNDEFINED_ID)
     }
 
     companion object {
