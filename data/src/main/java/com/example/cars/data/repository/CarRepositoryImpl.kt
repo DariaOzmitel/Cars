@@ -12,6 +12,7 @@ import com.example.cars.domain.models.Item
 import com.example.cars.domain.models.ManufacturerItem2
 import com.example.cars.domain.repository.CarRepository
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
 class CarRepositoryImpl @Inject constructor(
     private val carInfoDao: CarInfoDao,
@@ -19,11 +20,25 @@ class CarRepositoryImpl @Inject constructor(
     private val carListMapper: CarListMapper,
     private val manufacturerListMapper: ManufacturerListMapper
 ) : CarRepository {
-    override fun getCarList(): LiveData<List<CarItem>> = carInfoDao.getCarList().map {
-        carListMapper.mapListDbToListEntity(it)
+    override fun <T : Item> getItemList(itemClass: KClass<T>): LiveData<List<Item>> {
+        return when (itemClass) {
+            CarItem::class -> {
+                carInfoDao.getCarList().map {
+                    carListMapper.mapListDbToListEntity(it)
+                }
+            }
+
+            else -> {
+                carInfoDao.getCarList().map {
+                    carListMapper.mapTestListDbToListEntity(it)
+                }
+            }
+        }
+
     }
 
-    override suspend fun addCar(item: Item) {
+
+    override suspend fun addItem(item: Item) {
         when (item) {
             is CarItem -> {
                 carInfoDao.addCarItem(carListMapper.mapCarEntityToDbModel(item))
@@ -45,7 +60,7 @@ class CarRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun editCar(item: Item) {
+    override suspend fun editItem(item: Item) {
         when (item) {
             is CarItem -> {
                 carInfoDao.addCarItem(carListMapper.mapCarEntityToDbModel(item))
@@ -55,7 +70,7 @@ class CarRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteCar(item: Item) {
+    override suspend fun deleteItem(item: Item) {
         when (item) {
             is CarItem -> {
                 carInfoDao.deleteCarItem(item.id)
@@ -65,7 +80,15 @@ class CarRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCarItem(itemId: Int): CarItem {
-        return carListMapper.mapCarDbModelToEntity(carInfoDao.getCarItem(itemId))
+    override suspend fun <T : Item> getItem(itemClass: KClass<T>, itemId: Int): Item {
+        return when (itemClass) {
+            CarItem::class -> {
+                carListMapper.mapCarDbModelToEntity(carInfoDao.getCarItem(itemId))
+            }
+
+            else -> {
+                carListMapper.mapTestDbModelToEntity(carInfoDao.getCarItem(itemId))
+            }
+        }
     }
 }

@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cars.CarApp
-import com.example.cars.activities.CarItemActivity
 import com.example.cars.ViewModelFactory
+import com.example.cars.activities.CarItemActivity
 import com.example.cars.adapters.CarListAdapter
 import com.example.cars.databinding.FragmentCarListBinding
 import javax.inject.Inject
