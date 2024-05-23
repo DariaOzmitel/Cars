@@ -10,19 +10,18 @@ import androidx.lifecycle.lifecycleScope
 import com.example.cars.CarApp
 import com.example.cars.R
 import com.example.cars.ViewModelFactory
-import com.example.cars.databinding.ActivityCarItemBinding
+import com.example.cars.databinding.ActivityManufacturerItemBinding
 import com.example.cars.domain.models.Item
-import com.example.cars.state.CarItemInfo
-import com.example.cars.state.CloseScreen
-import com.example.cars.state.ErrorInputCarModel
-import com.example.cars.state.ErrorInputManufacturer
+import com.example.cars.state.CloseManufacturerItemScreen
+import com.example.cars.state.ErrorInputManufacturerName
+import com.example.cars.state.ManufacturerItemInfo
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CarItemActivity : AppCompatActivity() {
+class ManufacturerItemActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityCarItemBinding.inflate(layoutInflater)
+        ActivityManufacturerItemBinding.inflate(layoutInflater)
     }
     private val component by lazy {
         (application as CarApp).component
@@ -32,7 +31,7 @@ class CarItemActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[CarItemViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[ManufacturerItemViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,35 +44,25 @@ class CarItemActivity : AppCompatActivity() {
 
     private fun addAfterTextChanged() {
         binding.etManufacturer.doAfterTextChanged {
-            viewModel.resetErrorInputManufacturer()
-        }
-        binding.etCarModel.doAfterTextChanged {
-            viewModel.resetErrorInputCarModel()
+            viewModel.resetErrorInputManufacturerName()
         }
     }
 
-    private fun observeCarItem() {
+    private fun observeManufacturerItem() {
         lifecycleScope.launch {
             viewModel.state.collect {
                 when (it) {
-                    is CarItemInfo -> {
-                        binding.etManufacturer.setText(it.value.manufacturer)
-                        binding.etCarModel.setText(it.value.carModel)
+                    is ManufacturerItemInfo -> {
+                        binding.etManufacturer.setText(it.value.manufacturerName)
                     }
 
-                    is ErrorInputManufacturer -> {
+                    is ErrorInputManufacturerName -> {
                         if (it.value) binding.tilManufacturer.error =
                             getString(R.string.param_manufacturer_is_absent)
                         else binding.tilManufacturer.error = null
                     }
 
-                    is ErrorInputCarModel -> {
-                        if (it.value) binding.tilCarModel.error =
-                            getString(R.string.param_car_model_is_absent)
-                        else binding.tilCarModel.error = null
-                    }
-
-                    is CloseScreen -> {
+                    is CloseManufacturerItemScreen -> {
                         finish()
                     }
                 }
@@ -87,7 +76,7 @@ class CarItemActivity : AppCompatActivity() {
         when (defineScreenMode()) {
             MODE_EDIT -> {
                 launchEditMode()
-                observeCarItem()
+                observeManufacturerItem()
             }
 
             MODE_ADD -> launchAddMode()
@@ -96,20 +85,18 @@ class CarItemActivity : AppCompatActivity() {
 
     private fun launchAddMode() {
         binding.buttonSave.setOnClickListener {
-            viewModel.addCarItem(
-                binding.etManufacturer.text.toString(),
-                binding.etCarModel.text.toString()
+            viewModel.addManufacturerItem(
+                binding.etManufacturer.text.toString()
             )
         }
-        observeCarItem()
+        observeManufacturerItem()
     }
 
     private fun launchEditMode() {
-        viewModel.getCarItem(defineCarItemId())
+        viewModel.getManufacturerItem(defineManufacturerItemId())
         binding.buttonSave.setOnClickListener {
-            viewModel.editCarItem(
-                binding.etManufacturer.text.toString(),
-                binding.etCarModel.text.toString()
+            viewModel.editManufacturerItem(
+                binding.etManufacturer.text.toString()
             )
         }
     }
@@ -124,29 +111,29 @@ class CarItemActivity : AppCompatActivity() {
         return mode
     }
 
-    private fun defineCarItemId(): Int {
-        if (!intent.hasExtra(EXTRA_CAR_ITEM_ID)) {
+    private fun defineManufacturerItemId(): Int {
+        if (!intent.hasExtra(EXTRA_MANUFACTURER_ITEM_ID)) {
             throw RuntimeException("Param shop item id is absent")
         }
-        return intent.getIntExtra(EXTRA_CAR_ITEM_ID, Item.UNDEFINED_ID)
+        return intent.getIntExtra(EXTRA_MANUFACTURER_ITEM_ID, Item.UNDEFINED_ID)
     }
 
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
-        private const val EXTRA_CAR_ITEM_ID = "extra_car_item_id"
+        private const val EXTRA_MANUFACTURER_ITEM_ID = "extra_manufacturer_item_id"
 
         fun newIntentAddItem(context: Context): Intent {
-            val intent = Intent(context, CarItemActivity::class.java)
+            val intent = Intent(context, ManufacturerItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
             return intent
         }
 
-        fun newIntentEditItem(context: Context, carItemId: Int): Intent {
-            val intent = Intent(context, CarItemActivity::class.java)
+        fun newIntentEditItem(context: Context, manufacturerItemId: Int): Intent {
+            val intent = Intent(context, ManufacturerItemActivity::class.java)
             intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
-            intent.putExtra(EXTRA_CAR_ITEM_ID, carItemId)
+            intent.putExtra(EXTRA_MANUFACTURER_ITEM_ID, manufacturerItemId)
             return intent
         }
     }

@@ -17,6 +17,9 @@
             android:name=".activities.CarItemActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ManufacturerItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>

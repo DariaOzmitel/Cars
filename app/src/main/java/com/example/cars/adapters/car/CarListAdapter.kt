@@ -1,4 +1,4 @@
-package com.example.cars.adapters
+package com.example.cars.adapters.car
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

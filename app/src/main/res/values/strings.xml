@@ -8,4 +8,6 @@
     <string name="addManufacturer">AddManufacturer</string>
     <string name="id">Id</string>
     <string name="addNewManufacturer">Add new manufacturer</string>
+    <string name="car_list">Car list</string>
+    <string name="manufacturer_list">Manufacturer list</string>
 </resources>

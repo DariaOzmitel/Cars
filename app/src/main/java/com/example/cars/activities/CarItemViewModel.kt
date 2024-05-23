@@ -2,15 +2,15 @@ package com.example.cars.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cars.CarItemInfo
-import com.example.cars.CarItemState
-import com.example.cars.CloseScreen
-import com.example.cars.ErrorInputCarModel
-import com.example.cars.ErrorInputManufacturer
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.useCases.item.AddItemUseCase
 import com.example.cars.domain.useCases.item.EditItemUseCase
 import com.example.cars.domain.useCases.item.GetItemUseCase
+import com.example.cars.state.CarItemInfo
+import com.example.cars.state.CarItemState
+import com.example.cars.state.CloseScreen
+import com.example.cars.state.ErrorInputCarModel
+import com.example.cars.state.ErrorInputManufacturer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -87,7 +87,7 @@ class CarItemViewModel @Inject constructor(
         _state.value = ErrorInputCarModel(false)
     }
 
-    fun finishWork() {
+    private fun finishWork() {
         _state.value = CloseScreen
     }
 

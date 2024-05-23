@@ -4,9 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@id/carListFragment">
-
     <fragment
         android:id="@+id/carListFragment"
         android:name="com.example.cars.fragments.CarListFragment"
-        android:label="CarListFragment" />
+        android:label="@string/car_list"
+        tools:layout="@layout/fragment_car_list">
+        <action
+            android:id="@+id/action_carListFragment_to_manufacturerListFragment2"
+            app:destination="@id/manufacturerListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/manufacturerListFragment"
+        android:name="com.example.cars.fragments.ManufacturerListFragment"
+        android:label="@string/manufacturer_list"
+        tools:layout="@layout/fragment_manufacturer_list" />
 </navigation>

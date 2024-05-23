@@ -8,6 +8,7 @@ import com.example.cars.data.mapper.CarListMapper
 import com.example.cars.data.mapper.ManufacturerListMapper
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.models.Item
+import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.repository.CarRepository
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -23,6 +24,12 @@ class CarRepositoryImpl @Inject constructor(
             CarItem::class -> {
                 carInfoDao.getCarList().map {
                     carListMapper.mapListDbToListEntity(it)
+                }
+            }
+
+            ManufacturerItem::class -> {
+                manufacturerInfoDao.getManufacturerList().map {
+                    manufacturerListMapper.mapListDbToListEntity(it)
                 }
             }
 
@@ -42,6 +49,14 @@ class CarRepositoryImpl @Inject constructor(
                 carInfoDao.addCarItem(carListMapper.mapCarEntityToDbModel(item))
             }
 
+            is ManufacturerItem -> {
+                manufacturerInfoDao.addManufacturerItem(
+                    manufacturerListMapper.mapEntityToDbModel(
+                        item
+                    )
+                )
+            }
+
             else -> {}
         }
     }
@@ -50,6 +65,14 @@ class CarRepositoryImpl @Inject constructor(
         when (item) {
             is CarItem -> {
                 carInfoDao.addCarItem(carListMapper.mapCarEntityToDbModel(item))
+            }
+
+            is ManufacturerItem -> {
+                manufacturerInfoDao.addManufacturerItem(
+                    manufacturerListMapper.mapEntityToDbModel(
+                        item
+                    )
+                )
             }
 
             else -> {}
@@ -62,6 +85,10 @@ class CarRepositoryImpl @Inject constructor(
                 carInfoDao.deleteCarItem(item.id)
             }
 
+            is ManufacturerItem -> {
+                manufacturerInfoDao.deleteManufacturerItem(item.id)
+            }
+
             else -> {}
         }
     }
@@ -70,6 +97,14 @@ class CarRepositoryImpl @Inject constructor(
         return when (itemClass) {
             CarItem::class -> {
                 carListMapper.mapCarDbModelToEntity(carInfoDao.getCarItem(itemId))
+            }
+
+            ManufacturerItem::class -> {
+                manufacturerListMapper.mapDbModelToEntity(
+                    manufacturerInfoDao.getManufacturerItem(
+                        itemId
+                    )
+                )
             }
 
             else -> {

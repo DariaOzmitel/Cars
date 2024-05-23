@@ -1,4 +1,4 @@
-package com.example.cars
+package com.example.cars.state
 
 import com.example.cars.domain.models.CarItem
 

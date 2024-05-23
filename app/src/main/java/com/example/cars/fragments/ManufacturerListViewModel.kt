@@ -1,8 +1,9 @@
 package com.example.cars.fragments
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.useCases.item.DeleteItemUseCase
 import com.example.cars.domain.useCases.item.GetItemListUseCase
 import kotlinx.coroutines.launch
@@ -12,11 +13,12 @@ class ManufacturerListViewModel @Inject constructor(
     private val getItemListUseCase: GetItemListUseCase,
     private val deleteItemUseCase: DeleteItemUseCase
 ) : ViewModel() {
-    val carList = getItemListUseCase.getItemList(CarItem::class)
+    val manufacturerList =
+        getItemListUseCase.getItemList(ManufacturerItem::class) as LiveData<List<ManufacturerItem>>
 
-    fun deleteCarItem(carItem: CarItem) {
+    fun deleteManufacturerItem(manufacturerItem: ManufacturerItem) {
         viewModelScope.launch {
-            deleteItemUseCase.deleteItem(carItem)
+            deleteItemUseCase.deleteItem(manufacturerItem)
         }
     }
 }

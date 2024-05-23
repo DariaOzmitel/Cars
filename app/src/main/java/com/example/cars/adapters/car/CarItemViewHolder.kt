@@ -1,4 +1,4 @@
-package com.example.cars.adapters
+package com.example.cars.adapters.car
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cars.databinding.ItemCarBinding
