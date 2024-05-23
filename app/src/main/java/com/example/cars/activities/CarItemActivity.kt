@@ -16,6 +16,7 @@ import com.example.cars.state.CarItemInfo
 import com.example.cars.state.CloseScreen
 import com.example.cars.state.ErrorInputCarModel
 import com.example.cars.state.ErrorInputManufacturer
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +42,25 @@ class CarItemActivity : AppCompatActivity() {
         component.inject(this)
         launchRightMode()
         addAfterTextChanged()
+        observeManufacturerList()
+    }
+
+    private fun observeManufacturerList() {
+        viewModel.manufacturerList.observe(this) { manufacturerItemList ->
+            val manufacturerItems: Array<String> =
+                if (!manufacturerItemList.isNullOrEmpty()) {
+                    var i = 0
+                    Array(
+                        manufacturerItemList.size
+                    ) { manufacturerItemList[i++].manufacturerName }
+                } else {
+                    arrayOf("")
+                }
+
+            (binding.etManufacturer as? MaterialAutoCompleteTextView)?.setSimpleItems(
+                manufacturerItems
+            )
+        }
     }
 
     private fun addAfterTextChanged() {
@@ -53,6 +73,7 @@ class CarItemActivity : AppCompatActivity() {
     }
 
     private fun observeCarItem() {
+
         lifecycleScope.launch {
             viewModel.state.collect {
                 when (it) {

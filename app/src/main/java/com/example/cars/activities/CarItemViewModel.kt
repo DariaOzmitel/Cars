@@ -1,10 +1,13 @@
 package com.example.cars.activities
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.useCases.item.AddItemUseCase
 import com.example.cars.domain.useCases.item.EditItemUseCase
+import com.example.cars.domain.useCases.item.GetItemListUseCase
 import com.example.cars.domain.useCases.item.GetItemUseCase
 import com.example.cars.state.CarItemInfo
 import com.example.cars.state.CarItemState
@@ -19,7 +22,8 @@ import javax.inject.Inject
 class CarItemViewModel @Inject constructor(
     private val addItemUseCase: AddItemUseCase,
     private val getItemUseCase: GetItemUseCase,
-    private val editItemUseCase: EditItemUseCase
+    private val editItemUseCase: EditItemUseCase,
+    private val getItemListUseCase: GetItemListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CarItemState>(
@@ -28,6 +32,9 @@ class CarItemViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     private lateinit var carItem: CarItem
+
+    val manufacturerList =
+        getItemListUseCase.getItemList(ManufacturerItem::class) as LiveData<List<ManufacturerItem>>
 
     fun addCarItem(inputManufacturer: String, inputCarModel: String) {
         val manufacturer = parseString(inputManufacturer)
