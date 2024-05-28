@@ -1,10 +1,11 @@
 package com.example.cars.di
 
 import android.app.Application
-import com.example.cars.data.repository.CarRepositoryImpl
 import com.example.cars.data.database.AppDatabase
+import com.example.cars.data.database.carModel.CarModelInfoDao
 import com.example.cars.data.database.cars.CarInfoDao
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
+import com.example.cars.data.repository.CarRepositoryImpl
 import com.example.cars.domain.repository.CarRepository
 import dagger.Binds
 import dagger.Module
@@ -25,6 +26,11 @@ interface DataModule {
         @Provides
         fun provideManufacturerInfoDao(application: Application): ManufacturerInfoDao {
             return AppDatabase.getInstance(application).manufacturerInfoDao()
+        }
+
+        @Provides
+        fun provideCarModelInfoDao(application: Application): CarModelInfoDao {
+            return AppDatabase.getInstance(application).carModelInfoDao()
         }
     }
 }

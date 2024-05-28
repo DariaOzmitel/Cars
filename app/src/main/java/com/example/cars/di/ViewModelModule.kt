@@ -2,8 +2,10 @@ package com.example.cars.di
 
 import androidx.lifecycle.ViewModel
 import com.example.cars.activities.CarItemViewModel
+import com.example.cars.activities.CarModelItemViewModel
 import com.example.cars.activities.ManufacturerItemViewModel
 import com.example.cars.fragments.CarListViewModel
+import com.example.cars.fragments.CarModelListViewModel
 import com.example.cars.fragments.ManufacturerListViewModel
 import dagger.Binds
 import dagger.Module
@@ -30,4 +32,14 @@ interface ViewModelModule {
     @ViewModelKey(ManufacturerItemViewModel::class)
     @Binds
     fun bindManufacturerItemViewModel(impl: ManufacturerItemViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(CarModelItemViewModel::class)
+    @Binds
+    fun bindCarModelItemViewModel(impl: CarModelItemViewModel): ViewModel
+
+    @IntoMap
+    @ViewModelKey(CarModelListViewModel::class)
+    @Binds
+    fun bindCarModelListViewModel(impl: CarModelListViewModel): ViewModel
 }

@@ -17,5 +17,14 @@
         android:id="@+id/manufacturerListFragment"
         android:name="com.example.cars.fragments.ManufacturerListFragment"
         android:label="@string/manufacturer_list"
-        tools:layout="@layout/fragment_manufacturer_list" />
+        tools:layout="@layout/fragment_manufacturer_list">
+        <action
+            android:id="@+id/action_manufacturerListFragment_to_carModelListFragment"
+            app:destination="@id/carModelListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/carModelListFragment"
+        android:name="com.example.cars.fragments.CarModelListFragment"
+        android:label="@string/car_model_list"
+        tools:layout="@layout/fragment_car_model_list" />
 </navigation>

@@ -1,11 +1,11 @@
 package com.example.cars.domain.models
 
-sealed class Item
-{
+sealed class Item {
     companion object {
         const val UNDEFINED_ID = 0
     }
 }
+
 data class CarItem(
     val id: Int = UNDEFINED_ID,
     val manufacturer: String,
@@ -14,7 +14,7 @@ data class CarItem(
 
 data class CarModelItem(
     val id: Int = UNDEFINED_ID,
-    val manufacturerId: Int,
+    val manufacturerName: String,
     val carModelName: String
 ) : Item()
 

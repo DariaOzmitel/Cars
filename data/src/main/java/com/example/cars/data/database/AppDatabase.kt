@@ -4,14 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.cars.data.database.carModel.CarModelInfoDao
+import com.example.cars.data.database.carModel.CarModelInfoDbModel
 import com.example.cars.data.database.cars.CarInfoDao
 import com.example.cars.data.database.cars.CarInfoDbModel
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
 
 @Database(
-    entities = [CarInfoDbModel::class, ManufacturerInfoDbModel::class],
-    version = 3,
+    entities = [CarInfoDbModel::class, ManufacturerInfoDbModel::class, CarModelInfoDbModel::class],
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -40,4 +42,5 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun carInfoDao(): CarInfoDao
     abstract fun manufacturerInfoDao(): ManufacturerInfoDao
+    abstract fun carModelInfoDao(): CarModelInfoDao
 }

@@ -2,11 +2,14 @@ package com.example.cars.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.example.cars.data.database.carModel.CarModelInfoDao
 import com.example.cars.data.database.cars.CarInfoDao
 import com.example.cars.data.database.manufacturers.ManufacturerInfoDao
 import com.example.cars.data.mapper.CarListMapper
+import com.example.cars.data.mapper.CarModelListMapper
 import com.example.cars.data.mapper.ManufacturerListMapper
 import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.Item
 import com.example.cars.domain.models.ManufacturerItem
 import com.example.cars.domain.repository.CarRepository
@@ -15,8 +18,10 @@ import kotlin.reflect.KClass
 
 class CarRepositoryImpl @Inject constructor(
     private val carInfoDao: CarInfoDao,
+    private val carModelInfoDao: CarModelInfoDao,
     private val manufacturerInfoDao: ManufacturerInfoDao,
     private val carListMapper: CarListMapper,
+    private val carModelListMapper: CarModelListMapper,
     private val manufacturerListMapper: ManufacturerListMapper
 ) : CarRepository {
     override fun <T : Item> getItemList(itemClass: KClass<T>): LiveData<List<Item>> {
@@ -33,15 +38,18 @@ class CarRepositoryImpl @Inject constructor(
                 }
             }
 
-            else -> {
-                carInfoDao.getCarList().map {
-                    carListMapper.mapTestListDbToListEntity(it)
+            CarModelItem::class -> {
+                carModelInfoDao.getCarModelList().map {
+                    carModelListMapper.mapListDbToListEntity(it)
                 }
+            }
+
+            else -> {
+                throw RuntimeException(ERROR_TYPE)
             }
         }
 
     }
-
 
     override suspend fun addItem(item: Item) {
         when (item) {
@@ -57,7 +65,13 @@ class CarRepositoryImpl @Inject constructor(
                 )
             }
 
-            else -> {}
+            is CarModelItem -> {
+                carModelInfoDao.addCarModelItem(carModelListMapper.mapEntityToDbModel(item))
+            }
+
+            else -> {
+                throw RuntimeException(ERROR_TYPE)
+            }
         }
     }
 
@@ -75,7 +89,13 @@ class CarRepositoryImpl @Inject constructor(
                 )
             }
 
-            else -> {}
+            is CarModelItem -> {
+                carModelInfoDao.addCarModelItem(carModelListMapper.mapEntityToDbModel(item))
+            }
+
+            else -> {
+                throw RuntimeException(ERROR_TYPE)
+            }
         }
     }
 
@@ -89,7 +109,13 @@ class CarRepositoryImpl @Inject constructor(
                 manufacturerInfoDao.deleteManufacturerItem(item.id)
             }
 
-            else -> {}
+            is CarModelItem -> {
+                carModelInfoDao.deleteCarModelItem(item.id)
+            }
+
+            else -> {
+                throw RuntimeException(ERROR_TYPE)
+            }
         }
     }
 
@@ -107,9 +133,17 @@ class CarRepositoryImpl @Inject constructor(
                 )
             }
 
+            CarModelItem::class -> {
+                carModelListMapper.mapDbModelToEntity(carModelInfoDao.getCarModelItem(itemId))
+            }
+
             else -> {
-                carListMapper.mapTestDbModelToEntity(carInfoDao.getCarItem(itemId))
+                throw RuntimeException(ERROR_TYPE)
             }
         }
+    }
+
+    companion object {
+        const val ERROR_TYPE = "itemClass is null or inappropriate"
     }
 }
