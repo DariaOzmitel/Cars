@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.cars.CarApp
 import com.example.cars.R
 import com.example.cars.ViewModelFactory
-import com.example.cars.databinding.ActivityCarItemBinding
+import com.example.cars.databinding.ActivityCarModelItemBinding
 import com.example.cars.domain.models.Item
 import com.example.cars.state.CarModelItemInfo
 import com.example.cars.state.CloseCarModelItemScreen
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class CarModelItemActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityCarItemBinding.inflate(layoutInflater)
+        ActivityCarModelItemBinding.inflate(layoutInflater)
     }
     private val component by lazy {
         (application as CarApp).component

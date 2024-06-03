@@ -11,6 +11,7 @@ import com.example.cars.CarApp
 import com.example.cars.R
 import com.example.cars.ViewModelFactory
 import com.example.cars.databinding.ActivityCarItemBinding
+import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.Item
 import com.example.cars.state.CarItemInfo
 import com.example.cars.state.CloseScreen
@@ -32,6 +33,8 @@ class CarItemActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    private lateinit var carModelList: List<CarModelItem>
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[CarItemViewModel::class.java]
     }
@@ -43,6 +46,7 @@ class CarItemActivity : AppCompatActivity() {
         launchRightMode()
         addAfterTextChanged()
         observeManufacturerList()
+        setItemClickListener()
     }
 
     private fun observeManufacturerList() {
@@ -60,12 +64,47 @@ class CarItemActivity : AppCompatActivity() {
             (binding.etManufacturer as? MaterialAutoCompleteTextView)?.setSimpleItems(
                 manufacturerItems
             )
+            observeCarModelList()
+        }
+    }
+
+    private fun observeCarModelList() {
+        viewModel.carModelList.observe(this) { carModelItemList ->
+            carModelList = carModelItemList
+            refreshCarModelList(carModelList)
+        }
+    }
+
+    private fun refreshCarModelList(list: List<CarModelItem>) {
+        val carModelItems: Array<String> =
+            if (!list.isNullOrEmpty()) {
+                val filteredList = list.filter {
+                    it.manufacturerName == binding.etManufacturer.text.toString()
+                }
+                var i = 0
+                Array(
+                    filteredList.size
+                ) { filteredList[i++].carModelName }
+            } else {
+                arrayOf("")
+            }
+
+        (binding.etCarModel as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            carModelItems
+        )
+    }
+
+    private fun setItemClickListener() {
+        binding.etManufacturer.setOnItemClickListener { _, _, _, _ ->
+            refreshCarModelList(carModelList)
+            binding.etCarModel.setText("")
         }
     }
 
     private fun addAfterTextChanged() {
         binding.etManufacturer.doAfterTextChanged {
             viewModel.resetErrorInputManufacturer()
+
         }
         binding.etCarModel.doAfterTextChanged {
             viewModel.resetErrorInputCarModel()

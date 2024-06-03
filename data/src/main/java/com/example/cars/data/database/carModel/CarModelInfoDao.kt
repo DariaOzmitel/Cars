@@ -14,6 +14,9 @@ interface CarModelInfoDao {
     @Query("SELECT * FROM carModelInfo")
     fun getCarModelList(): LiveData<List<CarModelInfoDbModel>>
 
+    @Query("SELECT * FROM carModelInfo WHERE manufacturerName=:manufacturerName")
+    fun getCarModelListByManufacturer(manufacturerName: String): LiveData<List<CarModelInfoDbModel>>
+
     @Query("SELECT * FROM carModelInfo WHERE id=:carModelItemId LIMIT 1")
     suspend fun getCarModelItem(carModelItemId: Int): CarModelInfoDbModel
 

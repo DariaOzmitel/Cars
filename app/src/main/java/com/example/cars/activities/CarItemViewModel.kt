@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cars.domain.models.CarItem
+import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.ManufacturerItem
+import com.example.cars.domain.useCases.filter.FilterCarModelByManufacturerUseCase
 import com.example.cars.domain.useCases.item.AddItemUseCase
 import com.example.cars.domain.useCases.item.EditItemUseCase
 import com.example.cars.domain.useCases.item.GetItemListUseCase
@@ -23,7 +25,8 @@ class CarItemViewModel @Inject constructor(
     private val addItemUseCase: AddItemUseCase,
     private val getItemUseCase: GetItemUseCase,
     private val editItemUseCase: EditItemUseCase,
-    private val getItemListUseCase: GetItemListUseCase
+    private val getItemListUseCase: GetItemListUseCase,
+    private val filterCarModelByManufacturerUseCase: FilterCarModelByManufacturerUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CarItemState>(
@@ -35,6 +38,9 @@ class CarItemViewModel @Inject constructor(
 
     val manufacturerList =
         getItemListUseCase.getItemList(ManufacturerItem::class) as LiveData<List<ManufacturerItem>>
+
+    val carModelList =
+        getItemListUseCase.getItemList(CarModelItem::class) as LiveData<List<CarModelItem>>
 
     fun addCarItem(inputManufacturer: String, inputCarModel: String) {
         val manufacturer = parseString(inputManufacturer)
@@ -48,6 +54,21 @@ class CarItemViewModel @Inject constructor(
             finishWork()
         }
     }
+
+//    fun filterCarModelByManufacturer(manufacturerName: String): Array<String> {
+//        val carModelListLiveData = filterCarModelByManufacturerUseCase.filterCarModelByManufacturer(manufacturerName)
+//        val carModelList = carModelListLiveData.value
+//        val carModelItems: Array<String> =
+//            if (!carModelList.isNullOrEmpty()) {
+//                var i = 0
+//                Array(
+//                    carModelList.size
+//                ) { carModelList[i++].carModelName }
+//            } else {
+//                arrayOf("")
+//            }
+//        return carModelItems
+//    }
 
     fun getCarItem(carItemId: Int) {
         viewModelScope.launch {

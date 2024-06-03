@@ -143,6 +143,12 @@ class CarRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun filterCarModelByManufacturer(manufacturerName: String): LiveData<List<CarModelItem>> =
+        carModelInfoDao.getCarModelListByManufacturer(manufacturerName).map {
+            carModelListMapper.mapListDbToListEntity(it)
+        }
+
+
     companion object {
         const val ERROR_TYPE = "itemClass is null or inappropriate"
     }
