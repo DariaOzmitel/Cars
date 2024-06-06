@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.cars.databinding.ItemCarBinding
 import com.example.cars.domain.models.CarItem
 
-class CarListAdapter: ListAdapter<CarItem, CarItemViewHolder>(CarItemDiffCallback()) {
+class CarListAdapter : ListAdapter<CarItem, CarItemViewHolder>(CarItemDiffCallback()) {
 
     var onCarItemClickListener: ((CarItem) -> Unit)? = null
 
@@ -26,6 +26,7 @@ class CarListAdapter: ListAdapter<CarItem, CarItemViewHolder>(CarItemDiffCallbac
                 tvId.text = id.toString()
                 tvManufacturer.text = manufacturer
                 tvCarModel.text = carModel
+                tvPrice.text = price.toString()
                 root.setOnClickListener {
                     onCarItemClickListener?.invoke(carItem)
                 }

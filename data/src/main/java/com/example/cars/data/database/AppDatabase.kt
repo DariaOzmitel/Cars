@@ -13,7 +13,7 @@ import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
 
 @Database(
     entities = [CarInfoDbModel::class, ManufacturerInfoDbModel::class, CarModelInfoDbModel::class],
-    version = 6,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

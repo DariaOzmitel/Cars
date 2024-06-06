@@ -9,7 +9,8 @@ sealed class Item {
 data class CarItem(
     val id: Int = UNDEFINED_ID,
     val manufacturer: String,
-    val carModel: String
+    val carModel: String,
+    val price: Int
 ) : Item()
 
 data class CarModelItem(

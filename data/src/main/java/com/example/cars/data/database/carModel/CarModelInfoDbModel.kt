@@ -9,7 +9,7 @@ import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
 
 @Entity(
     tableName = "carModelInfo",
-    indices = [Index("id")],
+    indices = [Index(value = ["manufacturerName", "carModel"], unique = true)],
     foreignKeys = [
         ForeignKey(
             entity = ManufacturerInfoDbModel::class,

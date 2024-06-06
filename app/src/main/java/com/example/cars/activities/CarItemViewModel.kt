@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cars.domain.models.CarItem
 import com.example.cars.domain.models.CarModelItem
 import com.example.cars.domain.models.ManufacturerItem
-import com.example.cars.domain.useCases.filter.FilterCarModelByManufacturerUseCase
 import com.example.cars.domain.useCases.item.AddItemUseCase
 import com.example.cars.domain.useCases.item.EditItemUseCase
 import com.example.cars.domain.useCases.item.GetItemListUseCase
@@ -16,6 +15,7 @@ import com.example.cars.state.CarItemState
 import com.example.cars.state.CloseScreen
 import com.example.cars.state.ErrorInputCarModel
 import com.example.cars.state.ErrorInputManufacturer
+import com.example.cars.state.ErrorInputPrice
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,12 +25,11 @@ class CarItemViewModel @Inject constructor(
     private val addItemUseCase: AddItemUseCase,
     private val getItemUseCase: GetItemUseCase,
     private val editItemUseCase: EditItemUseCase,
-    private val getItemListUseCase: GetItemListUseCase,
-    private val filterCarModelByManufacturerUseCase: FilterCarModelByManufacturerUseCase
+    val getItemListUseCase: GetItemListUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CarItemState>(
-        CarItemInfo(CarItem(manufacturer = "", carModel = ""))
+        CarItemInfo(CarItem(manufacturer = "", carModel = "", price = 0))
     )
     val state = _state.asStateFlow()
 
@@ -42,33 +41,24 @@ class CarItemViewModel @Inject constructor(
     val carModelList =
         getItemListUseCase.getItemList(CarModelItem::class) as LiveData<List<CarModelItem>>
 
-    fun addCarItem(inputManufacturer: String, inputCarModel: String) {
+    fun addCarItem(inputManufacturer: String, inputCarModel: String, inputPrice: String) {
         val manufacturer = parseString(inputManufacturer)
         val carModel = parseString(inputCarModel)
-        val fieldsValid = validateInput(manufacturer, carModel)
+        val price = parseCount(inputPrice)
+        val fieldsValid = validateInput(manufacturer, carModel, price)
         if (fieldsValid) {
             viewModelScope.launch {
-                val carItem = CarItem(manufacturer = manufacturer, carModel = carModel)
+                val carItem =
+                    CarItem(
+                        manufacturer = manufacturer,
+                        carModel = carModel,
+                        price = price
+                    )
                 addItemUseCase.addItem(carItem)
             }
             finishWork()
         }
     }
-
-//    fun filterCarModelByManufacturer(manufacturerName: String): Array<String> {
-//        val carModelListLiveData = filterCarModelByManufacturerUseCase.filterCarModelByManufacturer(manufacturerName)
-//        val carModelList = carModelListLiveData.value
-//        val carModelItems: Array<String> =
-//            if (!carModelList.isNullOrEmpty()) {
-//                var i = 0
-//                Array(
-//                    carModelList.size
-//                ) { carModelList[i++].carModelName }
-//            } else {
-//                arrayOf("")
-//            }
-//        return carModelItems
-//    }
 
     fun getCarItem(carItemId: Int) {
         viewModelScope.launch {
@@ -77,13 +67,19 @@ class CarItemViewModel @Inject constructor(
         }
     }
 
-    fun editCarItem(inputManufacturer: String, inputCarModel: String) {
+    fun editCarItem(inputManufacturer: String, inputCarModel: String, inputPrice: String) {
         val manufacturer = parseString(inputManufacturer)
         val carModel = parseString(inputCarModel)
-        val fieldsValid = validateInput(manufacturer, carModel)
+        val price = parseCount(inputPrice)
+        val fieldsValid = validateInput(manufacturer, carModel, price)
         if (fieldsValid) {
             viewModelScope.launch {
-                carItem = carItem.copy(manufacturer = manufacturer, carModel = carModel)
+                carItem =
+                    carItem.copy(
+                        manufacturer = manufacturer,
+                        carModel = carModel,
+                        price = price
+                    )
                 editItemUseCase.editItem(carItem)
             }
             finishWork()
@@ -94,7 +90,19 @@ class CarItemViewModel @Inject constructor(
         return inputString?.trim() ?: ""
     }
 
-    private fun validateInput(inputManufacturer: String, inputCarModel: String): Boolean {
+    private fun parseCount(inputCount: String?): Int {
+        return try {
+            inputCount?.trim()?.toInt() ?: 0
+        } catch (e: Exception) {
+            0
+        }
+    }
+
+    private fun validateInput(
+        inputManufacturer: String,
+        inputCarModel: String,
+        inputPrice: Int
+    ): Boolean {
         var result = true
         if (inputManufacturer.isBlank()) {
             _state.value = ErrorInputManufacturer(true)
@@ -102,6 +110,10 @@ class CarItemViewModel @Inject constructor(
         }
         if (inputCarModel.isBlank()) {
             _state.value = ErrorInputCarModel(true)
+            result = false
+        }
+        if (inputPrice <= 0) {
+            _state.value = ErrorInputPrice(true)
             result = false
         }
         return result
@@ -113,6 +125,10 @@ class CarItemViewModel @Inject constructor(
 
     fun resetErrorInputCarModel() {
         _state.value = ErrorInputCarModel(false)
+    }
+
+    fun resetErrorInputPrice() {
+        _state.value = ErrorInputPrice(false)
     }
 
     private fun finishWork() {

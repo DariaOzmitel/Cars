@@ -6,5 +6,6 @@ sealed class CarItemState
 class CarItemInfo(val value: CarItem) : CarItemState()
 class ErrorInputManufacturer(val value: Boolean) : CarItemState()
 class ErrorInputCarModel(val value: Boolean) : CarItemState()
+class ErrorInputPrice(val value: Boolean) : CarItemState()
 data object CloseScreen : CarItemState()
 

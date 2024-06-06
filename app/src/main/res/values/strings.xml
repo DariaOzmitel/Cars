@@ -5,10 +5,12 @@
     <string name="save">Save</string>
     <string name="param_manufacturer_is_absent">Param manufacturer is absent</string>
     <string name="param_car_model_is_absent">Param car model is absent</string>
+    <string name="param_price_is_absent">Param price is absent</string>
     <string name="addManufacturer">AddManufacturer</string>
     <string name="id">Id</string>
     <string name="addNewManufacturer">Add new manufacturer</string>
     <string name="car_list">Car list</string>
     <string name="manufacturer_list">Manufacturer list</string>
     <string name="car_model_list">Car model list</string>
+    <string name="price">Price:</string>
 </resources>

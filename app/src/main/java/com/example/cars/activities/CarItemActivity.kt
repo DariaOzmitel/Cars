@@ -17,6 +17,7 @@ import com.example.cars.state.CarItemInfo
 import com.example.cars.state.CloseScreen
 import com.example.cars.state.ErrorInputCarModel
 import com.example.cars.state.ErrorInputManufacturer
+import com.example.cars.state.ErrorInputPrice
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -109,6 +110,10 @@ class CarItemActivity : AppCompatActivity() {
         binding.etCarModel.doAfterTextChanged {
             viewModel.resetErrorInputCarModel()
         }
+
+        binding.etPrice.doAfterTextChanged {
+            viewModel.resetErrorInputPrice()
+        }
     }
 
     private fun observeCarItem() {
@@ -119,6 +124,7 @@ class CarItemActivity : AppCompatActivity() {
                     is CarItemInfo -> {
                         binding.etManufacturer.setText(it.value.manufacturer)
                         binding.etCarModel.setText(it.value.carModel)
+                        binding.etPrice.setText(it.value.price.toString())
                     }
 
                     is ErrorInputManufacturer -> {
@@ -131,6 +137,12 @@ class CarItemActivity : AppCompatActivity() {
                         if (it.value) binding.tilCarModel.error =
                             getString(R.string.param_car_model_is_absent)
                         else binding.tilCarModel.error = null
+                    }
+
+                    is ErrorInputPrice -> {
+                        if (it.value) binding.tilPrice.error =
+                            getString(R.string.param_price_is_absent)
+                        else binding.tilPrice.error = null
                     }
 
                     is CloseScreen -> {
@@ -158,7 +170,8 @@ class CarItemActivity : AppCompatActivity() {
         binding.buttonSave.setOnClickListener {
             viewModel.addCarItem(
                 binding.etManufacturer.text.toString(),
-                binding.etCarModel.text.toString()
+                binding.etCarModel.text.toString(),
+                binding.etPrice.text.toString()
             )
         }
         observeCarItem()
@@ -169,7 +182,8 @@ class CarItemActivity : AppCompatActivity() {
         binding.buttonSave.setOnClickListener {
             viewModel.editCarItem(
                 binding.etManufacturer.text.toString(),
-                binding.etCarModel.text.toString()
+                binding.etCarModel.text.toString(),
+                binding.etPrice.text.toString()
             )
         }
     }
