@@ -14,7 +14,8 @@ import com.example.cars.data.database.manufacturers.ManufacturerInfoDbModel
         ForeignKey(
             entity = ManufacturerInfoDbModel::class,
             parentColumns = ["manufacturer"],
-            childColumns = ["manufacturerName"]
+            childColumns = ["manufacturerName"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

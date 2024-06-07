@@ -78,7 +78,7 @@ class CarItemActivity : AppCompatActivity() {
 
     private fun refreshCarModelList(list: List<CarModelItem>) {
         val carModelItems: Array<String> =
-            if (!list.isNullOrEmpty()) {
+            if (list.isNotEmpty()) {
                 val filteredList = list.filter {
                     it.manufacturerName == binding.etManufacturer.text.toString()
                 }
